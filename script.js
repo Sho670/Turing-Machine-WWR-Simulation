@@ -19,7 +19,7 @@ function renderTape() {
 
 // Update status text
 function updateStatus(msg) {
-    document.getElementById("statusBox").innerText = "Status: " + msg;
+    document.getElementById("statusBox").innerText = "State Status: " + msg;
 }
 
 // Highlight current state
