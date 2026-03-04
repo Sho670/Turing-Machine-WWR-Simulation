@@ -9,6 +9,7 @@ h2 {
 }
 
 /* ===== SIMULATION PANEL ===== */
+
 #uiPanel {
     background: #222;
     color: white;
@@ -52,6 +53,8 @@ h2 {
 }
 
 /* ===== TAPE ===== */
+
+
 #tapeContainer {
     display: flex;
     gap: 8px;
@@ -77,6 +80,8 @@ h2 {
 }
 
 /* ===== SVG MACHINE ===== */
+
+
 svg {
     background: white;
     border: 1px solid #ccc;
