@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Turing Machine Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Turing Machine Visualization With Autorun + Modern UI</h2>
+<div id="tmInfo" style="
+    background:#f4f4f4;
+    padding:20px;
+    border-radius:8px;
+    margin:20px 0;
+    width: 90%;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+">
+    <h3>About the Turing Machine for L = { w w<sup>R</sup> | w ∈ {0,1}* }</h3>
+
+    <p>
+        This Turing Machine accepts all strings where the second half is the reverse 
+        of the first half. This is the classic <b>ww<sup>R</sup></b> language, meaning a
+        string followed immediately by its mirror image.
+    </p>
+
+    <p>
+        Example accepted strings: <b>00</b>, <b>0110</b>, <b>10100101</b>  
+        Example rejected strings: <b>01</b>, <b>0101</b>, <b>1100</b>
+    </p>
+
+    <h4>How the Machine Works</h4>
+    <ul>
+        <li>The machine starts by reading the leftmost symbol.</li>
+        <li>It marks the first symbol (0 → B or 1 → B depending on path).</li>
+        <li>It then scans toward the right end seeking the matching final symbol.</li>
+        <li>If found, it erases (makes it B), returns left, and repeats.</li>
+        <li>If all symbols are matched correctly, it moves to the ACCEPTED state.</li>
+        <li>If a mismatch occurs, the machine halts without reaching accept.</li>
+    </ul>
+
+    <hr>
+
+    <h3>Turing Machine Transition Table</h3>
+
+    <table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;">
+        <tr style="background:#ddd;">
+            <th>Current State</th>
+            <th>Read</th>
+            <th>Write</th>
+            <th>Move</th>
+            <th>Next State</th>
+        </tr>
+
+        <!-- q1 -->
+        <tr><td>q1</td><td>0</td><td>B</td><td>R</td><td>q2</td></tr>
+        <tr><td>q1</td><td>1</td><td>B</td><td>R</td><td>q5</td></tr>
+        <tr><td>q1</td><td>B</td><td>B</td><td>L</td><td>ACCEPTED</td></tr>
+
+        <!-- q2 -->
+        <tr><td>q2</td><td>0</td><td>0</td><td>R</td><td>q2</td></tr>
+        <tr><td>q2</td><td>1</td><td>1</td><td>R</td><td>q2</td></tr>
+        <tr><td>q2</td><td>B</td><td>B</td><td>L</td><td>q3</td></tr>
+
+        <!-- q3 -->
+        <tr><td>q3</td><td>0</td><td>B</td><td>L</td><td>q4</td></tr>
+
+        <!-- q4 -->
+        <tr><td>q4</td><td>0</td><td>0</td><td>L</td><td>q4</td></tr>
+        <tr><td>q4</td><td>1</td><td>1</td><td>L</td><td>q4</td></tr>
+        <tr><td>q4</td><td>B</td><td>B</td><td>R</td><td>q1</td></tr>
+
+        <!-- q5 -->
+        <tr><td>q5</td><td>0</td><td>0</td><td>R</td><td>q5</td></tr>
+        <tr><td>q5</td><td>1</td><td>1</td><td>R</td><td>q5</td></tr>
+        <tr><td>q5</td><td>B</td><td>B</td><td>L</td><td>q6</td></tr>
+
+        <!-- q6 -->
+        <tr><td>q6</td><td>1</td><td>B</td><td>L</td><td>q7</td></tr>
+
+        <!-- q7 -->
+        <tr><td>q7</td><td>0</td><td>0</td><td>L</td><td>q7</td></tr>
+        <tr><td>q7</td><td>1</td><td>1</td><td>L</td><td>q7</td></tr>
+        <tr><td>q7</td><td>B</td><td>B</td><td>R</td><td>q1</td></tr>
+
+    </table>
+</div>
+<!-- Modern Control Panel -->
+<div id="uiPanel">
+    <div id="tapeContainer"></div>
+    <div id="statusBox">Status: Waiting...</div>
+
+    <div id="controls">
+        <input type="text" id="inputTape" placeholder="Enter input (0/1)">
+        <button id="runBtn">Run</button>
+    </div>
+</div>
+
+<!-- Machine Diagram -->
+<svg id="tmCanvas" width="1200" height="600">
+
+    <!-- Arrowhead marker -->
+    <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10"
+            refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+        </marker>
+    </defs>
+
+    <!-- STATES -->
+    <g class="state" id="q1" transform="translate(120,260)">
+        <circle r="40"></circle>
+        <text y="6">q1</text>
+    </g>
+
+    <g class="state" id="q2" transform="translate(350,120)">
+        <circle r="40"></circle>
+        <text y="6">q2</text>
+    </g>
+
+    <g class="state" id="q3" transform="translate(550,120)">
+        <circle r="40"></circle>
+        <text y="6">q3</text>
+    </g>
+
+    <g class="state" id="q4" transform="translate(750,150)">
+        <circle r="40"></circle>
+        <text y="6">q4</text>
+    </g>
+
+    <g class="state" id="q5" transform="translate(350,380)">
+        <circle r="40"></circle>
+        <text y="6">q5</text>
+    </g>
+
+    <g class="state" id="q6" transform="translate(550,380)">
+        <circle r="40"></circle>
+        <text y="6">q6</text>
+    </g>
+
+    <g class="state" id="q7" transform="translate(750,380)">
+        <circle r="40"></circle>
+        <text y="6">q7</text>
+    </g>
+
+    <g class="state accept" id="accepted" transform="translate(120,450)">
+        <circle r="40"></circle>
+        <text y="6">ACCEPTED</text>
+    </g>
+
+    <!-- ============= SELF LOOPS ============= -->
+
+    <!-- q2 self-loop -->
+    <path d="M350,80 C380,60 420,60 450,80"
+          fill="transparent" stroke="#333" stroke-width="2" marker-end="url(#arrow)"></path>
+    <text x="390" y="50">0/0,R</text>
+    <text x="390" y="65">1/1,R</text>
+
+    <!-- q4 self-loop -->
+    <path d="M750,110 C780,90 820,90 850,110"
+          fill="transparent" stroke="#333" stroke-width="2" marker-end="url(#arrow)"></path>
+    <text x="785" y="85">0/0,L</text>
+    <text x="785" y="100">1/1,L</text>
+
+    <!-- q5 self-loop -->
+    <path d="M350,340 C380,320 420,320 450,340"
+          fill="transparent" stroke="#333" stroke-width="2" marker-end="url(#arrow)"></path>
+    <text x="380" y="310">0/0,R</text>
+    <text x="380" y="325">1/1,R</text>
+
+    <!-- q7 self-loop -->
+    <path d="M750,340 C780,320 820,320 850,340"
+          fill="transparent" stroke="#333" stroke-width="2" marker-end="url(#arrow)"></path>
+    <text x="785" y="310">0/0,L</text>
+    <text x="785" y="325">1/1,L</text>
+
+    <!-- ============= NEW q1 → ACCEPTED ============= -->
+    <g class="transition" data-from="q1" data-to="accepted">
+        <line x1="120" y1="300" x2="120" y2="410" marker-end="url(#arrow)"></line>
+        <text x="145" y="360">B/B,L</text>
+    </g>
+
+    <!-- ============= MAIN TRANSITIONS ============= -->
+
+    <g class="transition" data-from="q1" data-to="q2">
+        <line x1="160" y1="260" x2="310" y2="140" marker-end="url(#arrow)"></line>
+        <text x="230" y="180">0/B,R</text>
+    </g>
+
+    <g class="transition" data-from="q1" data-to="q5">
+        <line x1="160" y1="260" x2="310" y2="380" marker-end="url(#arrow)"></line>
+        <text x="230" y="330">1/B,R</text>
+    </g>
+
+    <g class="transition" data-from="q2" data-to="q3">
+        <line x1="390" y1="120" x2="510" y2="120" marker-end="url(#arrow)"></line>
+        <text x="440" y="110">B/B,L</text>
+    </g>
+
+    <g class="transition" data-from="q3" data-to="q4">
+        <line x1="590" y1="120" x2="710" y2="150" marker-end="url(#arrow)"></line>
+        <text x="650" y="125">0/B,L</text>
+    </g>
+
+    <g class="transition" data-from="q4" data-to="q1">
+        <line x1="710" y1="150" x2="160" y2="260" marker-end="url(#arrow)"></line>
+        <text x="430" y="210">B/B,R</text>
+    </g>
+
+    <g class="transition" data-from="q5" data-to="q6">
+        <line x1="390" y1="380" x2="510" y2="380" marker-end="url(#arrow)"></line>
+        <text x="440" y="370">B/B,L</text>
+    </g>
+
+    <g class="transition" data-from="q6" data-to="q7">
+        <line x1="590" y1="380" x2="710" y2="380" marker-end="url(#arrow)"></line>
+        <text x="650" y="370">1/B,L</text>
+    </g>
+
+    <g class="transition" data-from="q7" data-to="q1">
+        <line x1="710" y1="380" x2="160" y2="260" marker-end="url(#arrow)"></line>
+        <text x="430" y="340">B/B,R</text>
+    </g>
+
+</svg>
+<script src="script.js"></script>
+</body>
+</html>
+
+CSS FILE
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+    margin: 20px;
+}
+
+h2 {
+    margin-bottom: 15px;
+}
+
+/* ===== MODERN PANEL ===== */
+#uiPanel {
+    background: #222;
+    color: white;
+    padding: 20px;
+    width: 90%;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+#controls {
+    margin-top: 15px;
+}
+
+#inputTape {
+    padding: 8px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: none;
+}
+
+#runBtn {
+    padding: 10px 20px;
+    background: #00b7ff;
+    border: none;
+    border-radius: 8px;
+    margin-left: 10px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+#runBtn:hover {
+    background: #0095d9;
+}
+
+#statusBox {
+    margin-top: 15px;
+    font-size: 18px;
+    padding: 10px;
+    background: #333;
+    border-radius: 8px;
+}
+
+/* ===== TAPE ===== */
+#tapeContainer {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.tapeCell {
+    width: 32px;
+    height: 32px;
+    background: #555;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 17px;
+}
+
+.tapeHead {
+    background: yellow;
+    color: black;
+    font-weight: bold;
+}
+
+/* ===== SVG MACHINE ===== */
+svg {
+    background: white;
+    border: 1px solid #ccc;
+}
+
+.state circle {
+    fill: #e0e0e0;
+    stroke: #333;
+    stroke-width: 2;
+}
+
+.state.active circle {
+    fill: yellow;
+    stroke: #cc7a00;
+    stroke-width: 4;
+}
+
+.accept circle {
+    fill: #c7ffcf;
+    stroke: #009900;
+    stroke-width: 3;
+}
+
+.transition line {
+    stroke: #333;
+    stroke-width: 2;
+}
+
+.transition.active line {
+    stroke: red;
+    stroke-width: 3;
+}
