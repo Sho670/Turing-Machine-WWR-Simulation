@@ -3,7 +3,7 @@ let head = 0;
 let currentState = "q1";
 let isRunning = false;
 
-// Update tape UI
+
 function renderTape() {
     const cont = document.getElementById("tapeContainer");
     cont.innerHTML = "";
@@ -75,7 +75,7 @@ function moveHead(dir) {
 function step() {
     if (currentState === "accepted") {
         activateState("accepted");
-        updateStatus("ACCEPTED ✔");
+        updateStatus("ACCEPTED");
         isRunning = false;
         return;
     }
@@ -84,7 +84,7 @@ function step() {
     let rule = TM[currentState][symbol];
 
     if (!rule) {
-        updateStatus("REJECTED ✖ (No rule for symbol " + symbol + ")");
+        updateStatus("REJECTED (No rule for symbol " + symbol + ")");
         isRunning = false;
         return;
     }
