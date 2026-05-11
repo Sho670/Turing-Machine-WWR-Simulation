@@ -89,7 +89,7 @@ Below is a **conceptual transition table** layout (you can replace states with y
 | `ql`         | `0`         | `Y`          | L    | `ql`       |
 | `ql`         | `1`         | `X`          | L    | `ql`       |
 | `ql`         | `B`         | `B`          | R    | `q0`       |
-| ... (mismatch rules) | – | – | – | `qrj` |
+
 
 Concrete implementations usually include extra states to handle edge cases (e.g., odd length, malformed input).
 
