@@ -97,3 +97,63 @@ Concrete implementations usually include extra states to handle edge cases (e.g.
 
 
 
+## 🖥️ Project Implementation
+
+This project can be implemented in any of the following ways:
+
+- **Simulator‑based:**  
+  - Use a Python or JS simulator that reads a transition table and runs the machine step‑by‑step.
+  - Example: a `TuringMachine` class that holds:
+    - `states`, `alphabet`, `tape`, `current_state`, `head_position`, `transitions`.
+
+- **Visualization:**  
+  - Show one step per line, printing:
+    - Tape contents.
+    - Current state.
+    - Direction of head movement.
+
+- **Animation (optional):**  
+  - Use a Jupyter notebook or web UI to animate the head movement and symbol changes.
+
+The key is to faithfully encode the outlined algorithm so that it correctly accepts \(ww^R\) and rejects all other strings.
+
+---
+
+## ✅ Example Runs
+
+### 1. Input: `00`
+
+1. Tape initially: `_ 0 0 _`  
+   - Head at first `0`.  
+2. Replace first `0` with `Y`, move right.  
+3. Reach last symbol, compare `0` with expectation; replace with `Y`.  
+4. Middle reached; all symbols are marked and matched → **Accept**.
+
+### 2. Input: `0110`
+
+1. First `0` → `Y`, move right to end.  
+2. Last `0` → `Y`, move left to next unread.  
+3. Next `1` → `X`, move right, last `1` → `X`.  
+4. All symbols paired correctly → **Accept**.
+
+### 3. Input: `01`
+
+- Attempt to match `0` (left) with `1` (right) → mismatch → **Reject**.
+
+These runs demonstrate that the machine correctly enforces the \(ww^R\) structure.
+
+---
+
+
+## 🖋️ Markdown Diagram (Optional)
+
+You can add a simple state‑transition diagram as a Markdown image or text. For example, in `docs/state_diagram.md`:
+
+```markdown
+- `q0` → `qr` on `0/B` (marking and moving right).
+- `qr` moves right until `B`, then moves left to `ql`.
+- `ql` moves left marking symbols, then returns to `q0`.
+- On all‑match: `q0` reaches marked region and enters `qa`.
+- On mismatch: the machine enters `qrj`.
+```
+
