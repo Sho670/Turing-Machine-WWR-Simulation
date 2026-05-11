@@ -77,7 +77,7 @@ Below is a **conceptual transition table** layout (you can replace states with y
 - `qa` : Accept state.
 - `qrj` : Reject state.
 
-### Example Transitions (Informal)
+### Example Transitions
 
 | Current State | Read Symbol | Write Symbol | Move | Next State |
 |--------------|-------------|--------------|------|------------|
@@ -91,7 +91,7 @@ Below is a **conceptual transition table** layout (you can replace states with y
 | `ql`         | `B`         | `B`          | R    | `q0`       |
 | ... (mismatch rules) | – | – | – | `qrj` |
 
-Concrete implementations usually include extra states to handle edge cases (e.g., odd length, malformed input). [web:1][web:4]
+Concrete implementations usually include extra states to handle edge cases (e.g., odd length, malformed input).
 
 ---
 
@@ -112,12 +112,6 @@ This project can be implemented in any of the following ways:
     - Current state.
     - Direction of head movement.
 
-- **Animation (optional):**  
-  - Use a Jupyter notebook or web UI to animate the head movement and symbol changes.
-
-The key is to faithfully encode the outlined algorithm so that it correctly accepts \(ww^R\) and rejects all other strings.
-
----
 
 ## ✅ Example Runs
 
@@ -145,9 +139,7 @@ These runs demonstrate that the machine correctly enforces the \(ww^R\) structur
 ---
 
 
-## 🖋️ Markdown Diagram (Optional)
-
-You can add a simple state‑transition diagram as a Markdown image or text. For example, in `docs/state_diagram.md`:
+## 🖋️ Markdown Diagram
 
 ```markdown
 - `q0` → `qr` on `0/B` (marking and moving right).
