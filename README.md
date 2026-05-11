@@ -91,8 +91,6 @@ Below is a **conceptual transition table** layout (you can replace states with y
 | `ql`         | `B`         | `B`          | R    | `q0`       |
 
 
-Concrete implementations usually include extra states to handle edge cases (e.g., odd length, malformed input).
-
 ---
 
 
@@ -102,12 +100,12 @@ Concrete implementations usually include extra states to handle edge cases (e.g.
 This project can be implemented in any of the following ways:
 
 - **Simulator‑based:**  
-  - Use a Python or JS simulator that reads a transition table and runs the machine step‑by‑step.
+  - Using a Python Interpretor that reads a transition table and runs the machine step‑by‑step.
   - Example: a `TuringMachine` class that holds:
     - `states`, `alphabet`, `tape`, `current_state`, `head_position`, `transitions`.
 
 - **Visualization:**  
-  - Show one step per line, printing:
+  - Showing one step per line, printing:
     - Tape contents.
     - Current state.
     - Direction of head movement.
