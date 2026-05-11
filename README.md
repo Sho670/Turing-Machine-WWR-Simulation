@@ -7,19 +7,19 @@ This project implements a **single‑tape deterministic Turing Machine (DTM)** t
 \[
 L = \{ww^R \mid w \in \{0,1\}^*\}
 \]
-where \(w^R\) is the reverse of the string \(w\). The machine reads an input string, checks if it is of the form \(ww^R\), and halts in an **accept** state only if the string belongs to \(L\); otherwise it halts in a **reject** (or non‑accepting) configuration. [web:1][web:4]
+where \(w^R\) is the reverse of the string \(w\). The machine reads an input string, checks if it is of the form \(ww^R\), and halts in an **accept** state only if the string belongs to \(L\); otherwise it halts in a **reject** (or non‑accepting) configuration.
 
 ---
 
 ## 🧠 What is the language \(ww^R\)?
 
-The language \(L = \{ww^R\}\) consists of all strings over the alphabet \(\{0, 1\}\) such that the first half of the string equals the reverse of the second half. [web:1][web:4]
+The language \(L = \{ww^R\}\) consists of all strings over the alphabet \(\{0, 1\}\) such that the first half of the string equals the reverse of the second half.
 
 - If \(w = 10110\), then \(w^R = 01101\), and the full string is \(1011001101\).
 - Typical accepted strings: \(\epsilon\) (empty), `00`, `11`, `0110`, `1001`, `01100110`, etc.
 - Rejected inputs: `01`, `10`, `001`, `1010` (not symmetric in this form).
 
-This language represents a special kind of **even‑length palindrome** and is **context‑sensitive**, but it is not context‑free; it is **decidable** by a Turing machine. [web:1][web:9]
+This language represents a special kind of **even‑length palindrome** and is **context‑sensitive**, but it is not context‑free; it is **decidable** by a Turing machine.
 
 ---
 
@@ -27,7 +27,7 @@ This language represents a special kind of **even‑length palindrome** and is *
 
 ## 🧰 Turing Machine Design (High‑Level Idea)
 
-The machine works by **matching symbols from the outer edges toward the middle**, using marker symbols to “cross‑off” matched pairs. [web:1][web:4]
+The machine works by **matching symbols from the outer edges toward the middle**, using marker symbols to “cross‑off” matched pairs.
 
 ### 1. Input Setup
 
@@ -35,7 +35,7 @@ The machine works by **matching symbols from the outer edges toward the middle**
 - Tape symbols used: \(\{0, 1, X, Y, \text{\textvisiblespace}\}\), where:
   - `X` marks matched `1`s,
   - `Y` marks matched `0`s,
-  - `\text{\textvisiblespace}` (blank) marks the end of the usable tape. [web:1][web:4]
+  - `\text{\textvisiblespace}` (blank) marks the end of the usable tape.
 
 - The input string is surrounded by blanks; the head starts at the leftmost symbol.
 
@@ -43,14 +43,14 @@ The machine works by **matching symbols from the outer edges toward the middle**
 
 1. **From left:**  
    - If current symbol is `0`, replace it with `Y` and move right.  
-   - If current symbol is `1`, replace it with `X` and move right. [web:1][web:4]
+   - If current symbol is `1`, replace it with `X` and move right.
 
 2. **Scan to the right end:**  
    - Move right until a blank or the end‑marker is found.  
    - Then move one step left to the last symbol.
 
 3. **Compare and mark:**  
-   - If the last symbol matches the mark (i.e., `0` if first was `0`, `1` if first was `1`), replace it with the same mark (`Y` or `X`) and move left. [web:1][web:4]
+   - If the last symbol matches the mark (i.e., `0` if first was `0`, `1` if first was `1`), replace it with the same mark (`Y` or `X`) and move left.
 
 4. **Return to next unread symbol:**  
    - Move left until a blank or the beginning of the marked region is reached, then move one step right to the next unread symbol.
@@ -59,7 +59,7 @@ The machine works by **matching symbols from the outer edges toward the middle**
 
 6. **Acceptance:**  
    - If all symbols are successfully matched and the head reaches a fully‑marked region with no mismatch, the machine enters an **accept** state.  
-   - If at any step a mismatch is found (e.g., `0` vs `1`), the machine halts in a **reject** state. [web:1][web:4]
+   - If at any step a mismatch is found (e.g., `0` vs `1`), the machine halts in a **reject** state.
 
 This approach ensures that the first half equals the reverse of the second half by pairing the \(i\‑\text{th}\) symbol from the left with the \(i\‑\text{th}\) symbol from the right.
 
