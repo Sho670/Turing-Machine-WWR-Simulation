@@ -23,3 +23,77 @@ This language represents a special kind of **even‑length palindrome** and is *
 
 ---
 
+
+
+## 🧰 Turing Machine Design (High‑Level Idea)
+
+The machine works by **matching symbols from the outer edges toward the middle**, using marker symbols to “cross‑off” matched pairs. [web:1][web:4]
+
+### 1. Input Setup
+
+- Tape alphabet: \(\Sigma = \{0, 1\}\)
+- Tape symbols used: \(\{0, 1, X, Y, \text{\textvisiblespace}\}\), where:
+  - `X` marks matched `1`s,
+  - `Y` marks matched `0`s,
+  - `\text{\textvisiblespace}` (blank) marks the end of the usable tape. [web:1][web:4]
+
+- The input string is surrounded by blanks; the head starts at the leftmost symbol.
+
+### 2. Algorithm Sketch
+
+1. **From left:**  
+   - If current symbol is `0`, replace it with `Y` and move right.  
+   - If current symbol is `1`, replace it with `X` and move right. [web:1][web:4]
+
+2. **Scan to the right end:**  
+   - Move right until a blank or the end‑marker is found.  
+   - Then move one step left to the last symbol.
+
+3. **Compare and mark:**  
+   - If the last symbol matches the mark (i.e., `0` if first was `0`, `1` if first was `1`), replace it with the same mark (`Y` or `X`) and move left. [web:1][web:4]
+
+4. **Return to next unread symbol:**  
+   - Move left until a blank or the beginning of the marked region is reached, then move one step right to the next unread symbol.
+
+5. **Repeat** the matching process until the middle is reached.
+
+6. **Acceptance:**  
+   - If all symbols are successfully matched and the head reaches a fully‑marked region with no mismatch, the machine enters an **accept** state.  
+   - If at any step a mismatch is found (e.g., `0` vs `1`), the machine halts in a **reject** state. [web:1][web:4]
+
+This approach ensures that the first half equals the reverse of the second half by pairing the \(i\‑\text{th}\) symbol from the left with the \(i\‑\text{th}\) symbol from the right.
+
+---
+
+## 🧩 State‑Transition Overview (Conceptual)
+
+Below is a **conceptual transition table** layout (you can replace states with your exact names, e.g., `q0, q1, ...`).
+
+### States (Example)
+
+- `q0` : Start state, read first symbol.
+- `qr` : Move right to end.
+- `ql` : Move left to next symbol.
+- `qa` : Accept state.
+- `qrj` : Reject state.
+
+### Example Transitions (Informal)
+
+| Current State | Read Symbol | Write Symbol | Move | Next State |
+|--------------|-------------|--------------|------|------------|
+| `q0`         | `0`         | `Y`          | R    | `qr`       |
+| `q0`         | `1`         | `X`          | R    | `qr`       |
+| `q0`         | `B`         | `B`          | –    | `qa` (accept empty) |
+| `qr`         | `{0,1}`     | `{0,1}`      | R    | `qr`       |
+| `qr`         | `B`         | `B`          | L    | `ql`       |
+| `ql`         | `0`         | `Y`          | L    | `ql`       |
+| `ql`         | `1`         | `X`          | L    | `ql`       |
+| `ql`         | `B`         | `B`          | R    | `q0`       |
+| ... (mismatch rules) | – | – | – | `qrj` |
+
+Concrete implementations usually include extra states to handle edge cases (e.g., odd length, malformed input). [web:1][web:4]
+
+---
+
+
+
