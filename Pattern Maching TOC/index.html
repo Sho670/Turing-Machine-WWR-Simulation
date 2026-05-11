@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NFA Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>NFA — Substring “abc” or “ac”</h1>
+<div id="content">
+
+    <h2>Pattern Matching Using Nondeterministic Finite Automata (NFA)</h2>
+
+    <p>
+        Pattern matching is the process of checking whether an input string contains 
+        a specific sequence of characters (called a <b>pattern</b>).  
+        In automata theory, we can design <b>Nondeterministic Finite Automata (NFA)</b> 
+        that can detect whether a substring occurs anywhere inside a larger string.
+    </p>
+
+    <p>
+        NFAs allow multiple possible transitions from the same state using the same 
+        input symbol. This makes them ideal for pattern matching because the NFA 
+        can <b>“guess”</b> where the pattern might start.  
+        If <i>any</i> path leads to an accepting state, the whole input is accepted.
+    </p>
+
+    <p>
+        The NFA below checks for the occurrence of either substring 
+        <b>"abc"</b> or <b>"ac"</b> inside the input string over the alphabet 
+        {a, b, c}. As soon as one of these patterns is detected, the NFA enters an 
+        accepting state and remains accepting.
+    </p>
+
+    <h3>Transition Table for the NFA</h3>
+
+    <table id="transition-table">
+        <tr>
+            <th>State</th>
+            <th>Input</th>
+            <th>Next States</th>
+        </tr>
+        <tr>
+            <td>p</td>
+            <td>a</td>
+            <td>{ p, q, t }</td>
+        </tr>
+        <tr>
+            <td>p</td>
+            <td>b</td>
+            <td>{ p }</td>
+        </tr>
+        <tr>
+            <td>p</td>
+            <td>c</td>
+            <td>{ p }</td>
+        </tr>
+        <tr>
+            <td>q</td>
+            <td>a</td>
+            <td>∅</td>
+        </tr>
+        <tr>
+            <td>q</td>
+            <td>b</td>
+            <td>{ r }</td>
+        </tr>
+        <tr>
+            <td>q</td>
+            <td>c</td>
+            <td>∅</td>
+        </tr>
+        <tr>
+            <td>r</td>
+            <td>a</td>
+            <td>∅</td>
+        </tr>
+        <tr>
+            <td>r</td>
+            <td>b</td>
+            <td>∅</td>
+        </tr>
+        <tr>
+            <td>r</td>
+            <td>c</td>
+            <td>{ s }</td>
+        </tr>
+        <tr>
+            <td>s</td>
+            <td>a, b, c</td>
+            <td>{ s }</td>
+        </tr>
+        <tr>
+            <td>t</td>
+            <td>a</td>
+            <td>∅</td>
+        </tr>
+        <tr>
+            <td>t</td>
+            <td>b</td>
+            <td>∅</td>
+        </tr>
+        <tr>
+            <td>t</td>
+            <td>c</td>
+            <td>{ u }</td>
+        </tr>
+        <tr>
+            <td>u</td>
+            <td>a, b, c</td>
+            <td>∅</td>
+        </tr>
+    </table>
+
+</div>
+<div id="controls">
+    <input type="text" id="userInput" placeholder="Enter input string (a,b,c)">
+    <button onclick="runNFA()">Run NFA</button>
+</div>
+
+<div id="result"></div>
+
+<svg id="nfa" width="900" height="400"></svg>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f3f3f3;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+#controls {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+#controls input {
+    padding: 8px;
+    width: 250px;
+    font-size: 16px;
+}
+
+#controls button {
+    padding: 8px 15px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#result {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+svg {
+    border: 1px solid #aaa;
+    background: #ffffff;
+}
+
+/* Circle states */
+.state {
+    stroke: #333;
+    stroke-width: 2px;
+    fill: #fffacc;
+}
+
+/* Accepting states */
+.accept {
+    stroke-width: 4px;
+}
+
+/* Active animation state */
+.active {
+    fill: #77dd77 !important;
+}
+
+/* Text labels */
+.label {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Arrow marker */
+.marker {
+    fill: #333;
+}
+
+#content {
+    width: 80%;
+    margin: 0 auto 20px auto;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+#transition-table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+#transition-table th, 
+#transition-table td {
+    border: 1px solid #666;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+#transition-table th {
+    background: #ffe680;
+}
+
+#transition-table tr:nth-child(even) {
+    background: #fff9cc;
+}
+
+#transition-table tr:nth-child(odd) {
+    background: #fff5b3;
+}
